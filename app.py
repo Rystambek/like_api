@@ -8,6 +8,49 @@ likeDB = LikeDB('like_db.json')
 def home():
     return "Hello World!"
 
+@app.route('/api/add-like/', methods=['POST'])
+def add_like():
+    # get data from request
+    data = request.get_json(force=True)
+
+    # user_id, img_id
+    user_id = data['user_id']
+    img_id = data['image_id']
+
+    # like img
+    likeDB.add_like(user_id, img_id)
+
+    return {'status': 200}
+
+
+@app.route('/api/add-dislike/', methods=['POST'])
+def add_dislike():
+    # get data from request
+    data = request.get_json(force=True)
+
+    # user_id, img_id
+    user_id = data['user_id']
+    img_id = data['image_id']
+
+    # dislike img
+    likeDB.add_dislike(user_id, img_id)
+
+    return {'status': 200}
+
+
+
+@app.route('/api/<img_id>')
+def get_data(img_id):
+    data = likeDB.get_likes_dislike(img_id)
+
+
+    return {
+        "like": data[0],
+        "dislike": data[1]
+    }
+
+
+
 # End point for getting image
 @app.route("/api/addImage", methods=["POST"])
 def addImage():
