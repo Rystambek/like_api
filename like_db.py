@@ -35,23 +35,15 @@ class LikeDB:
         likes = 0
         dislike = 0
         for user in self.users:
-            if user[image_id]['like']:
-                likes += 1
-            else:
-                dislike += 1
+            if user.get(image_id):
+                if user[image_id]['like']:
+                    likes += 1
+                else:
+                    dislike += 1
             
         return likes, dislike
+    
 
- 
-        
-        
-    def all_dislikes(self):
-        """Counts all users dislikes
-        returns
-            all users dislikes
-        """
-        pass
-        
         
     #Add a like to the database
     def add_like(self, user_id:str,image_id)->dict:
@@ -67,7 +59,14 @@ class LikeDB:
         # If the user document does not exist, create it
         if self.users.contains(doc_id=user_id):
             user_doc = self.users.get(doc_id=user_id)
-            user_doc[image_id] = {'like': True, 'dislike': False}
+            if user_doc.get(image_id):
+                if user_doc[image_id]['like'] == False:
+                    user_doc[image_id] = {'like': True, 'dislike': False}
+                else:
+                    user_doc.pop(image_id)
+            else:
+                user_doc[image_id] = {'like': True, 'dislike': False}
+
         else:
             user_doc = {image_id: {'like': True, 'dislike': False}}
         # Create user document
@@ -88,7 +87,14 @@ class LikeDB:
         '''
         if self.users.contains(doc_id=user_id):
             user_doc = self.users.get(doc_id=user_id)
-            user_doc[image_id] = {'like': False, 'dislike': True}
+            if user_doc.get(image_id):
+                if user_doc[image_id]['dislike'] == False:
+                    user_doc[image_id] = {'like': False, 'dislike': True}
+                else:
+                    user_doc.pop(image_id)
+            else:
+                user_doc[image_id] = {'like': False, 'dislike': True}
+
         else:
             user_doc = {image_id: {'like': False, 'dislike': True}}
         # Create user document
@@ -99,7 +105,9 @@ class LikeDB:
 
 # db = LikeDB('like_db.json')
 
-# db.add_like('user1', 'img1')
+# db.add_like('1', 'img1')
 # db.add_like('3', 'img2')
 # db.add_dislike('4', 'img2')
-# db.add_image('img1', 'msg1')
+# print(db.all_likes('img2'))
+# print(db.get_likes_dislike('img3'))
+
