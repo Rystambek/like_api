@@ -9,7 +9,7 @@ def home():
     return "Hello World!"
 
 @app.route('/api/add-like/', methods=['POST'])
-def add_like():
+def addLike():
     # get data from request
     data = request.get_json(force=True)
 
@@ -24,7 +24,7 @@ def add_like():
 
 
 @app.route('/api/add-dislike/', methods=['POST'])
-def add_dislike():
+def addDislike():
     # get data from request
     data = request.get_json(force=True)
 
