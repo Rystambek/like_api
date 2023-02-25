@@ -3,7 +3,7 @@ from flask import Flask, request
 from like_db import LikeDB
 # Create an instance of Flask
 app = Flask(__name__)
-likeDB = LikeDB('like_db.json')
+likeDB = LikeDB('like_api/like_db.json')
 @app.route("/")
 def home():
     return "Hello World!"
